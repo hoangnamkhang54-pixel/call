@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="vi"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Hai Đứa Mình</title>
+<style>
+*{box-sizing:border-box}html,body{height:100%;margin:0;font-family:system-ui,sans-serif;background:#12121a;color:#eee}
+[hidden]{display:none!important}
+button{border:0;border-radius:10px;background:#3a3a55;color:#fff;padding:8px 12px;font-size:16px;cursor:pointer}
+button.on{background:#e33}
+input,textarea{background:#22222f;border:1px solid #444;border-radius:10px;color:#fff;padding:10px;font-size:16px;width:100%}
+#login,#fr{display:flex;flex-direction:column;gap:10px;max-width:340px;margin:15vh auto;padding:20px}
+#app{display:flex;flex-direction:column;height:100%}
+header{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;padding-top:calc(10px + env(safe-area-inset-top,0px));background:#1c1c2a}
+section{flex:1;min-height:0;display:none;flex-direction:column}
+section.act{display:flex}
+nav{display:flex;background:#1c1c2a;padding-bottom:env(safe-area-inset-bottom,0px)}
+nav button{flex:1;border-radius:0;background:none;padding:12px 4px;font-size:14px}
+nav button.act{color:#7cf;border-top:2px solid #7cf}
+#msgs{flex:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:6px;background:#181826 center/cover}
+.m{max-width:75%;padding:8px 12px;border-radius:16px;word-break:break-word}
+.m.me{align-self:flex-end;background:#2b6cff}.m.ot{align-self:flex-start;background:#3a3a50}
+.m img,.m video{max-width:100%;border-radius:10px;display:block}.m audio{max-width:100%}
+.st{font-size:56px;line-height:1}
+#bar{display:flex;gap:6px;padding:8px;background:#1c1c2a;align-items:center}
+#stk{display:flex;flex-wrap:wrap;gap:4px;padding:8px;background:#1c1c2a}
+#stk span{font-size:30px;cursor:pointer}
+.pad{padding:14px;overflow-y:auto;display:flex;flex-direction:column;gap:10px}
+.ent{background:#22222f;padding:10px;border-radius:10px;white-space:pre-wrap}
+.ent small{color:#999;display:block;margin-bottom:4px}
+#bd{display:grid;grid-template-columns:repeat(3,90px);gap:6px;justify-content:center}
+#bd button{height:90px;font-size:44px}
+.sw{display:inline-block;width:44px;height:44px;border-radius:10px;margin:3px;cursor:pointer;border:2px solid #555}
+#call{position:fixed;inset:0;background:#000;z-index:9;display:flex;flex-direction:column}
+#rv{flex:1;min-height:0;width:100%;object-fit:contain;background:#000}
+#lv{position:absolute;right:10px;top:10px;width:110px;border-radius:10px;background:#222}
+#call button{margin:12px auto;background:#e33}
+#inc,#rq{position:fixed;left:10px;right:10px;top:10px;z-index:10;background:#2a2a40;border-radius:14px;padding:12px;display:flex;gap:8px;align-items:center}
+#inc span,#rq span{flex:1}
+</style></head><body>
+<div id="login" hidden>
+<h2>Hai Đứa Mình 💙</h2>
+<input id="un" placeholder="Đặt tên tài khoản (chữ thường, số, _)" autocomplete="off" autocapitalize="none">
+<button id="mk">Tạo tài khoản</button>
+<div id="er" style="color:#f77"></div>
+<button id="rb">Khôi phục từ file sao lưu</button>
+</div>
+<div id="fr" hidden>
+<h2>Xin chào <span id="mn"></span> 👋</h2>
+<div id="fi2" style="display:flex;flex-direction:column;gap:10px">
+<input id="fn" placeholder="Nhập tên tài khoản của bạn thân" autocomplete="off" autocapitalize="none">
+<button id="fs2">Gửi lời kết bạn</button>
+</div>
+<div id="fs"></div>
+<small id="ps" style="color:#999"></small>
+<button id="cx" hidden>Hủy lời mời</button>
+<small style="color:#999">Bạn thân nhập tên của bạn ở máy họ, hoặc bấm Đồng ý khi lời mời hiện lên. Cả hai cùng mở web mới kết nối được.</small>
+</div>
+<div id="app" hidden>
+<header><b id="pn"></b><span id="stt"></span><span><button id="c1">📞</button> <button id="c2">📹</button></span></header>
+<section id="chat" class="act">
+<div id="msgs"></div>
+<div id="stk" hidden></div>
+<div id="bar">
+<button id="sb">😀</button>
+<input id="tx" placeholder="Nhắn tin...">
+<button id="fb">📎</button><button id="pb">📷</button><button id="vid">🎥</button><button id="mic">🎤</button><button id="sd">➤</button>
+</div>
+<input id="fi" type="file" accept="image/*,video/*,audio/*" hidden>
+<input id="pi" type="file" accept="image/*" capture="environment" hidden>
+</section>
+<section id="diary"><div class="pad">
+<div id="dc"></div>
+<div><button id="d1">Của mình</button> <button id="d2">Của bạn</button></div>
+<div id="dw"><textarea id="dt" rows="4" placeholder="Hôm nay mình..."></textarea><button id="ds" style="margin-top:6px">Lưu nhật ký</button></div>
+<div id="dl" class="pad" style="padding:0"></div>
+</div></section>
+<section id="game"><div class="pad" style="align-items:center">
+<h3>Cờ ca-rô 3x3 (X đi trước)</h3>
+<div id="gs"></div><div id="bd"></div><button id="rs">Ván mới</button>
+</div></section>
+<section id="set"><div class="pad">
+<h3>Tài khoản của bạn</h3><div id="rc" style="font-size:20px"></div>
+<h3>Hình nền chat</h3>
+<div id="sw"></div>
+<label>Màu tự chọn <input id="co" type="color" style="width:60px;padding:2px"></label>
+<button id="bu">Chọn ảnh làm nền</button><input id="bi" type="file" accept="image/*" hidden>
+<button id="br">Xóa hình nền</button>
+<h3>Sao lưu (gồm cả tài khoản)</h3>
+<button id="ex">Xuất file sao lưu</button>
+<button id="im">Nhập file sao lưu</button><input id="imf" type="file" accept=".json" hidden>
+<button id="wp" style="background:#c33;margin-top:30px">Xóa toàn bộ dữ liệu và tài khoản trên máy này</button>
+</div></section>
+<nav><button data-t="chat" class="act">💬 Chat</button><button data-t="diary">📔 Nhật ký</button><button data-t="game">🎮 Game</button><button data-t="set">⚙️ Cài đặt</button></nav>
+</div>
+<div id="inc" hidden><span id="it"></span><button id="ok">Nhận</button><button id="no" style="background:#e33">Từ chối</button></div>
+<div id="rq" hidden><span id="rt"></span><button id="rqy">Đồng ý</button><button id="rqn" style="background:#e33">Từ chối</button></div>
+<div id="call" hidden><video id="rv" autoplay playsinline></video><video id="lv" autoplay playsinline muted></video><button id="hg">Kết thúc</button></div>
+<script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+<script>
+const $=s=>document.querySelector(s);
+let DB;
+const openDB=n=>new Promise(r=>{const q=indexedDB.open(n,1);q.onupgradeneeded=()=>{["msgs","diary","pdiary","kv"].forEach(s=>q.result.createObjectStore(s,{keyPath:"id"}))};q.onsuccess=()=>r(q.result)});
+const tx=async(s,m,f)=>{const d=await DB;return new Promise((res,rej)=>{const t=d.transaction(s,m),o=f(t.objectStore(s));t.oncomplete=()=>res(o.result);t.onerror=rej})};
+const put=(s,v)=>tx(s,"readwrite",o=>o.put(v)),all=s=>tx(s,"readonly",o=>o.getAll()),clr=s=>tx(s,"readwrite",o=>o.clear());
+const kvGet=async k=>{const r=await tx("kv","readonly",o=>o.get(k));return r&&r.v},kvSet=(k,v)=>put("kv",{id:k,v});
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,8);
+const rnd=()=>[...crypto.getRandomValues(new Uint8Array(16))].map(x=>x.toString(16).padStart(2,"0")).join("");
+const API="https://script.google.com/macros/s/AKfycbwOS-Nq9P--IhAz5XjZwxWOPc1YiziSO9obHqPQW08AztNNmRbi1O1qP3ojcuBpAIniaA/exec";
+const okName=n=>/^[a-z0-9_]{3,20}$/.test(n);
+const sha=async x=>[...new Uint8Array(await crypto.subtle.digest("SHA-256",new TextEncoder().encode(x)))].map(b=>b.toString(16).padStart(2,"0")).join("");
+const api=async d=>{try{const r=await fetch(API,{method:"POST",body:JSON.stringify(d)});const t=await r.text();try{return JSON.parse(t)}catch(e){return{bad:1}}}catch(e){return null}};
+let me,tok,friend="",ftok="",fst="none",role,peer,conn,call,st,reqIn=null,view=1,urls=[],allow=false,pallow=false,started=false,tries=0;
+let g={b:" ".repeat(9),t:"X",n:0},perr="";
+const ICE={config:{iceServers:[{urls:"stun:stun.l.google.com:19302"},{urls:"turn:openrelay.metered.ca:80",username:"openrelayproject",credential:"openrelayproject"},{urls:"turn:openrelay.metered.ca:443?transport=tcp",username:"openrelayproject",credential:"openrelayproject"}]}};
+const save=()=>{localStorage.friend=friend;localStorage.ftok=ftok;localStorage.fst=fst};
+const setRole=()=>{role=friend?(me<friend?"a":"b"):undefined};
+const live=()=>!!(conn&&conn.open&&conn.v);
+const stat=o=>$("#stt").textContent=o?"🟢 đang nối":"⚪ ngoại tuyến";
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>{
+document.querySelectorAll("nav button,section").forEach(x=>x.classList.remove("act"));
+b.classList.add("act");$("#"+b.dataset.t).classList.add("act")});
+$("#mk").onclick=async()=>{
+const n=$("#un").value.trim().toLowerCase();
+if(!okName(n)){$("#er").textContent="Tên 3-20 ký tự: chữ thường không dấu, số, _";return}
+if(!API){$("#er").textContent="Chưa cấu hình địa chỉ API";return}
+$("#er").textContent="Đang kiểm tra...";
+if(localStorage.ptn!=n){localStorage.ptn=n;localStorage.ptk=rnd()}
+const t=localStorage.ptk;
+const r=await api({a:"reg",n,k:await sha(t)});
+if(!r){$("#er").textContent="Không gọi được URL Apps Script (quyền truy cập phải là Bất kỳ ai)";return}
+if(r.bad){$("#er").textContent="Apps Script trả về lỗi (chưa cấp quyền hoặc code sai)";return}
+if(!r.ok){$("#er").textContent="Tên này đã có người dùng, chọn tên khác";return}
+localStorage.me=n;localStorage.tok=t;localStorage.fst="none";boot()};
+$("#rb").onclick=()=>$("#imf").click();
+$("#imf").onchange=e=>e.target.files[0]&&imp(e.target.files[0]);
+async function boot(){
+me=localStorage.me;tok=localStorage.tok;friend=localStorage.friend||"";ftok=localStorage.ftok||"";fst=localStorage.fst||"none";
+setRole();
+$("#login").hidden=true;
+DB=openDB("hdm-"+me);
+if(navigator.storage&&navigator.storage.persist)navigator.storage.persist();
+allow=!!await kvGet("allow");pallow=!!await kvGet("pallow");
+g=await kvGet("g")||g;
+ui();applyBg();$("#rc").textContent=me;
+if(peer)hook();else reg();
+setInterval(tick,3000);
+show()}
+function reg(){peer=new Peer("hdmu-"+me,ICE);hook()}
+function hook(){
+peer.on("connection",c=>link(c,false));
+peer.on("call",onCall);
+peer.on("error",e=>{
+if(e.type=="unavailable-id"){peer.destroy();peer=null;if(++tries<6)setTimeout(reg,3000);else alert("Tên này đang được mở ở nơi khác")}
+else if(e.type=="peer-unavailable")perr="Chưa thấy "+friend+" mở web";
+else perr="Lỗi kết nối: "+e.type})}
+function show(){
+const ok=fst=="ok";
+$("#app").hidden=!ok;$("#fr").hidden=ok;
+if(ok){
+$("#pn").textContent=friend;stat(live());
+if(!started){started=true;renderAll();drawGame();drawDiary()}}
+else{
+$("#mn").textContent=me;
+$("#fi2").hidden=fst=="pending";$("#cx").hidden=fst!="pending";
+$("#fs").textContent=fst=="pending"?"Đang chờ "+friend+" đồng ý (cả hai phải mở web)...":""}}
+function tick(){
+$("#ps").textContent=peer&&peer.open?(perr||"✅ Máy chủ ổn, sẵn sàng nhận lời mời"):"⏳ Đang kết nối máy chủ...";
+if(peer&&peer.disconnected&&!peer.destroyed)peer.reconnect();
+if(conn&&!conn.open&&Date.now()-conn.t>10000){const o=conn;conn=null;o.close()}
+if(!peer||!peer.open||conn)return;
+if(fst=="pending"||(fst=="ok"&&role=="a"))link(peer.connect("hdmu-"+friend,{reliable:true}),true)}
+function link(c,out){
+const keep=!role||out===(role=="a");
+if(conn&&conn!==c){
+if(!keep&&conn.k){c.close();return}
+const o=conn;conn=null;o.close();stat(false)}
+conn=c;c.k=keep;c.t=Date.now();c.v=false;
+c.on("open",()=>{
+perr="";
+if(fst=="ok")c.send({t:"hi",n:me,k:tok});
+else if(fst=="pending")c.send({t:"fr",n:me,k:tok})});
+c.on("data",d=>onData(d,c));
+c.on("close",()=>{
+if(reqIn&&reqIn.c===c){reqIn=null;$("#rq").hidden=true}
+if(conn===c){conn=null;stat(false)}});
+c.on("error",()=>{})}
+function accept(r){
+friend=r.n;ftok=r.k;fst="ok";save();setRole();
+r.c.send({t:"fa",n:me,k:tok});r.c.send({t:"hi",n:me,k:tok});
+show()}
+function onFr(d,c){
+if(fst=="ok"){
+if(d.n==friend&&d.k==ftok){c.send({t:"fa",n:me,k:tok});c.send({t:"hi",n:me,k:tok})}
+else{c.send({t:"fd"});c.close()}
+return}
+if(fst=="pending"){
+if(d.n==friend)accept({n:d.n,k:d.k,c});
+else{c.send({t:"fd"});c.close()}
+return}
+reqIn={n:d.n,k:d.k,c};
+$("#rt").textContent=d.n+" muốn kết bạn với bạn";$("#rq").hidden=false}
+function onFa(d,c){
+if(fst=="pending"&&d.n==friend){ftok=d.k;fst="ok";save();setRole();c.send({t:"hi",n:me,k:tok});show()}}
+async function sync(c){
+c.send({t:"have",ids:(await all("msgs")).map(m=>m.id)});
+if(allow)c.send({t:"dsync",items:await all("diary")});
+c.send({t:"g",g})}
+async function pack(m){return m.v instanceof Blob?{...m,v:await m.v.arrayBuffer()}:m}
+const unpack=m=>m.type=="text"||m.type=="sticker"?m:{...m,v:new Blob([m.v],{type:m.mime})};
+async function push(m,s){if(live())conn.send({t:"m",s,m:await pack(m)})}
+async function onData(d,c){
+if(c!==conn)return;
+if(d.t=="fr")return onFr(d,c);
+if(d.t=="fa")return onFa(d,c);
+if(d.t=="fd"){
+if(fst=="pending"){fst="none";friend="";ftok="";save();setRole();c.close();show();$("#fs").textContent="Lời mời bị từ chối"}
+return}
+if(d.t=="hi"){
+if(fst!="ok")return;
+if(d.n==friend&&d.k==ftok){if(!c.v){c.v=true;stat(true);sync(c)}}
+else c.close();
+return}
+if(!c.v)return;
+if(d.t=="have"){
+const h=new Set(d.ids);
+for(const m of await all("msgs"))if(!h.has(m.id))await push(m,true);
+c.send({t:"done"})}
+else if(d.t=="m"){const m=unpack(d.m);await put("msgs",m);if(!d.s)addMsg(m)}
+else if(d.t=="done")renderAll();
+else if(d.t=="dsync"||d.t=="d"){pallow=true;kvSet("pallow",true);for(const x of d.items||[d.item])await put("pdiary",x);if(view==2)drawDiary()}
+else if(d.t=="req"){reqDiary=true;drawDiary()}
+else if(d.t=="revoke"){pallow=false;kvSet("pallow",false);await clr("pdiary");if(view==2)drawDiary()}
+else if(d.t=="g"&&d.g.n>g.n){g=d.g;kvSet("g",g);drawGame()}}
+let reqDiary=false;
+function addMsg(m){
+const box=$("#msgs"),d=document.createElement("div");d.className="m "+(m.from==role?"me":"ot");let e;
+if(m.type=="text"||m.type=="sticker"){e=document.createElement("span");e.textContent=m.v;if(m.type=="sticker")e.className="st"}
+else{e=document.createElement(m.type=="img"?"img":m.type=="video"?"video":"audio");const u=URL.createObjectURL(m.v);urls.push(u);e.src=u;if(m.type!="img")e.controls=true}
+d.append(e);box.append(d);box.scrollTop=box.scrollHeight}
+async function renderAll(){
+$("#msgs").innerHTML="";urls.forEach(URL.revokeObjectURL);urls=[];
+(await all("msgs")).sort((a,b)=>a.ts-b.ts).forEach(addMsg)}
+async function send(type,v,mime){
+const m={id:uid(),from:role,type,v,mime,ts:Date.now()};
+await put("msgs",m);addMsg(m);push(m,false)}
+function sendText(){const v=$("#tx").value.trim();if(v){send("text",v);$("#tx").value=""}}
+function sendFile(f){if(!f)return;const t=f.type.startsWith("image")?"img":f.type.startsWith("video")?"video":"audio";send(t,f,f.type)}
+function recorder(btn,cons){
+let r;btn.onclick=async()=>{
+if(r&&r.state=="recording"){r.stop();return}
+const s=await navigator.mediaDevices.getUserMedia(cons);const ch=[];
+r=new MediaRecorder(s);r.ondataavailable=e=>ch.push(e.data);
+r.onstop=()=>{s.getTracks().forEach(t=>t.stop());btn.classList.remove("on");sendFile(new Blob(ch,{type:r.mimeType}))};
+r.start();btn.classList.add("on")}}
+async function startCall(v){
+if(!live())return alert("Bạn của bạn đang ngoại tuyến");
+st=await navigator.mediaDevices.getUserMedia({audio:true,video:v});
+show2();call=peer.call("hdmu-"+friend,st,{metadata:{video:v}});wire(call)}
+function show2(){$("#lv").srcObject=st;$("#lv").hidden=!st.getVideoTracks().length;$("#call").hidden=false}
+function wire(c){c.on("stream",s=>{$("#rv").srcObject=s});c.on("close",endCall)}
+function onCall(c){
+if(call||fst!="ok"||c.peer!="hdmu-"+friend){c.close();return}
+$("#inc").hidden=false;$("#it").textContent=friend+(c.metadata&&c.metadata.video?" gọi video":" gọi thoại");
+$("#ok").onclick=async()=>{
+$("#inc").hidden=true;
+st=await navigator.mediaDevices.getUserMedia({audio:true,video:!!(c.metadata&&c.metadata.video)});
+call=c;show2();c.answer(st);wire(c)};
+$("#no").onclick=()=>{$("#inc").hidden=true;c.close()};
+c.on("close",()=>$("#inc").hidden=true)}
+function endCall(){
+if(call)call.close();
+if(st)st.getTracks().forEach(t=>t.stop());
+call=st=null;$("#call").hidden=true}
+const L=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+const sym=()=>role=="a"?"X":"O";
+const win=b=>{const l=L.find(l=>b[l[0]]!=" "&&l.every(i=>b[i]==b[l[0]]));return l?b[l[0]]:b.includes(" ")?"":"="};
+function setG(n){g=n;kvSet("g",g);drawGame();if(live())conn.send({t:"g",g})}
+function play(i){if(g.t!=sym()||g.b[i]!=" "||win(g.b))return;setG({b:g.b.slice(0,i)+sym()+g.b.slice(i+1),t:sym()=="X"?"O":"X",n:g.n+1})}
+function drawGame(){
+const w=win(g.b);
+$("#gs").textContent=w=="="?"Hòa!":w?(w==sym()?"Bạn thắng 🎉":"Bạn thua 😅"):(g.t==sym()?"Lượt của bạn":"Chờ bạn đánh...");
+$("#bd").innerHTML="";
+[...g.b].forEach((c,i)=>{const b=document.createElement("button");b.textContent=c;b.onclick=()=>play(i);$("#bd").append(b)})}
+async function drawDiary(){
+$("#dw").hidden=view!=1;$("#dl").innerHTML="";$("#dc").innerHTML="";
+const add=(t,fn,p)=>{const b=document.createElement("button");b.textContent=t;b.onclick=fn;b.style.margin="2px";(p||$("#dc")).append(b)};
+if(reqDiary&&!allow){
+const s=document.createElement("div");s.textContent=friend+" xin xem nhật ký của bạn";$("#dc").append(s);
+add("Đồng ý",async()=>{allow=true;reqDiary=false;await kvSet("allow",true);if(live())conn.send({t:"dsync",items:await all("diary")});drawDiary()});
+add("Từ chối",()=>{reqDiary=false;drawDiary()})}
+if(allow)add("Thu hồi quyền xem của bạn",async()=>{allow=false;await kvSet("allow",false);if(live())conn.send({t:"revoke"});drawDiary()});
+let items;
+if(view==1)items=await all("diary");
+else{
+if(!pallow){
+add("Xin phép xem nhật ký của "+friend,()=>{if(live()){conn.send({t:"req"});alert("Đã gửi lời xin phép")}else alert("Cần cả hai cùng online")},$("#dl"));return}
+items=await all("pdiary")}
+items.sort((a,b)=>b.ts-a.ts).forEach(e=>{
+const d=document.createElement("div");d.className="ent";
+const sm=document.createElement("small");sm.textContent=new Date(e.ts).toLocaleString("vi-VN");
+d.append(sm,document.createTextNode(e.text));$("#dl").append(d)})}
+async function applyBg(){
+const v=await kvGet("bg");
+$("#msgs").style.background=!v?"":v instanceof Blob?`url(${URL.createObjectURL(v)}) center/cover`:v}
+const setBg=async v=>{await kvSet("bg",v);applyBg()};
+const b64=b=>new Promise(r=>{const f=new FileReader();f.onload=()=>r(f.result);f.readAsDataURL(b)});
+async function exp(){
+const o={id:{me:localStorage.me,tok:localStorage.tok,friend:localStorage.friend||"",ftok:localStorage.ftok||"",fst:localStorage.fst||"none"}};
+for(const s of["msgs","diary","pdiary"]){
+o[s]=[];
+for(const x of await all(s)){const y={...x};if(y.v instanceof Blob)y.v=await b64(y.v);o[s].push(y)}}
+const a=document.createElement("a");
+a.href=URL.createObjectURL(new Blob([JSON.stringify(o)],{type:"application/json"}));
+a.download="saoluu-"+me+"-"+new Date().toISOString().slice(0,10)+".json";a.click()}
+async function imp(f){
+const o=JSON.parse(await f.text());
+if(localStorage.me){if(o.id&&o.id.me!=localStorage.me){alert("File này của tài khoản khác");return}}
+else if(o.id){Object.entries(o.id).forEach(([k,v])=>localStorage[k]=v);DB=openDB("hdm-"+o.id.me)}
+else return;
+for(const s of["msgs","diary","pdiary"])for(const x of o[s]||[]){
+if(s=="msgs"&&x.type!="text"&&x.type!="sticker")x.v=await(await fetch(x.v)).blob();
+await put(s,x)}
+location.reload()}
+function ui(){
+$("#fs2").onclick=async()=>{
+const n=$("#fn").value.trim().toLowerCase();
+if(!okName(n)||n==me){$("#fs").textContent="Tên không hợp lệ";return}
+const r=await api({a:"has",n});
+if(r&&!r.bad&&!r.ok){$("#fs").textContent="Không có tài khoản nào tên này";return}
+friend=n;ftok="";fst="pending";save();setRole();show();
+if(conn&&conn.open)conn.send({t:"fr",n:me,k:tok})};
+$("#cx").onclick=()=>{friend="";ftok="";fst="none";save();setRole();if(conn){const o=conn;conn=null;o.close()}show()};
+$("#rqy").onclick=()=>{const r=reqIn;$("#rq").hidden=true;reqIn=null;if(r&&r.c.open&&r.c===conn)accept(r)};
+$("#rqn").onclick=()=>{const r=reqIn;$("#rq").hidden=true;reqIn=null;if(r){if(r.c.open)r.c.send({t:"fd"});r.c.close()}};
+$("#sd").onclick=sendText;
+$("#tx").onkeydown=e=>{if(e.key=="Enter")sendText()};
+$("#fb").onclick=()=>$("#fi").click();$("#pb").onclick=()=>$("#pi").click();
+$("#fi").onchange=e=>sendFile(e.target.files[0]);$("#pi").onchange=e=>sendFile(e.target.files[0]);
+recorder($("#mic"),{audio:true});recorder($("#vid"),{video:true,audio:true});
+["😀","😂","🥰","😎","😭","😡","👍","🎉","❤️","🔥","🤝","🐶","🐱","🍕","🙈","💩"].forEach(e=>{
+const s=document.createElement("span");s.textContent=e;s.onclick=()=>{send("sticker",e);$("#stk").hidden=true};$("#stk").append(s)});
+$("#sb").onclick=()=>$("#stk").hidden=!$("#stk").hidden;
+$("#c1").onclick=()=>startCall(false);$("#c2").onclick=()=>startCall(true);
+$("#hg").onclick=endCall;
+$("#rs").onclick=()=>setG({b:" ".repeat(9),t:"X",n:g.n+1});
+$("#d1").onclick=()=>{view=1;drawDiary()};$("#d2").onclick=()=>{view=2;drawDiary()};
+$("#ds").onclick=async()=>{
+const t=$("#dt").value.trim();if(!t)return;
+const x={id:uid(),text:t,ts:Date.now()};
+await put("diary",x);$("#dt").value="";
+if(allow&&live())conn.send({t:"d",item:x});
+drawDiary()};
+["linear-gradient(135deg,#667eea,#764ba2)","linear-gradient(135deg,#f093fb,#f5576c)","linear-gradient(135deg,#43e97b,#38f9d7)","linear-gradient(135deg,#fa709a,#fee140)","#000"].forEach(c=>{
+const s=document.createElement("span");s.className="sw";s.style.background=c;s.onclick=()=>setBg(c);$("#sw").append(s)});
+$("#co").oninput=e=>setBg(e.target.value);
+$("#bu").onclick=()=>$("#bi").click();
+$("#bi").onchange=e=>e.target.files[0]&&setBg(e.target.files[0]);
+$("#br").onclick=()=>setBg("");
+$("#ex").onclick=exp;$("#im").onclick=()=>$("#imf").click();
+$("#wp").onclick=async()=>{
+if(!confirm("Xóa hết chat, nhật ký, game và TÀI KHOẢN trên máy này? Không khôi phục được nếu chưa xuất sao lưu."))return;
+for(const k of["msgs","diary","pdiary","kv"])await clr(k);
+localStorage.clear();location.reload()}}
+if(localStorage.me)boot();else $("#login").hidden=false;
+</script></body></html>
